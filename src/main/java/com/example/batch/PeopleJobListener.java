@@ -12,17 +12,17 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PeopleJobListener implements JobExecutionListener {
-	private static final Logger log = LoggerFactory.getLogger(PeopleJobListener.class);
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
-	
-	@Override
-	public void afterJob(JobExecution jobExecution) {
-		if(jobExecution.getStatus() == BatchStatus.COMPLETED) {
-			log.info("-------------------> Finalizado");
-			jdbcTemplate.query("SELECT id, nombre, correo, ip FROM personas", 
-					(rs, row) -> new People(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getString(4)))
-			.forEach(p -> log.info("Fila: " + p));
-		}
-	}	
+    private static final Logger log = LoggerFactory.getLogger(PeopleJobListener.class);
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Override
+    public void afterJob(JobExecution jobExecution) {
+        if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
+            log.info("-------------------> Finalizado");
+            jdbcTemplate.query("SELECT id, nombre, correo, ip FROM personas",
+                            (rs, row) -> new People(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getString(4)))
+                    .forEach(p -> log.info("Fila: " + p));
+        }
+    }
 }
